@@ -1,0 +1,6 @@
+com\example\testservice\entity\User.class
+com\example\testservice\TestServiceApplication.class
+com\example\testservice\repository\UserRepository.class
+com\example\testservice\controller\TestController.class
+com\example\testservice\client\HelloServiceClient.class
+com\example\testservice\config\RestTemplateConfig.class

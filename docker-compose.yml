@@ -1,0 +1,51 @@
+version: '3'
+services:
+  api-gateway:
+    image: api-gateway-image
+    build:
+      context: ./api-gateway
+      dockerfile: dockerfile
+    ports:
+      - "8084:8084"
+    volumes:
+      - ./api-gateway/target/api-gateway.jar:/app/api-gateway.jar
+    depends_on:
+      - service-registry
+
+  test-service:
+    image: test-service-image
+    build:
+      context: ./test-service
+      dockerfile: dockerfile
+#    ports:
+#      - "8082:8082"
+    volumes:
+      - ./test-service/target/test-service.jar:/app/test-service.jar
+    depends_on:
+      - service-registry
+    deploy:
+      replicas: 1
+
+  hello-service:
+    image: hello-service-image
+    build:
+      context: ./hello-service
+      dockerfile: dockerfile
+#    ports:
+#      - "8083:8083"
+    volumes:
+      - ./hello-service/target/hello-service.jar:/app/hello-service.jar
+    depends_on:
+      - service-registry
+    deploy:
+      replicas: 1
+
+  service-registry:
+    image: service-registry-image
+    build:
+      context: ./service-registry
+      dockerfile: dockerfile
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./service-registry/target/service-registry.jar:/app/service-registry.jar

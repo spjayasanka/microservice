@@ -1,0 +1,17 @@
+# Use an official OpenJDK runtime as the base image
+FROM openjdk:17-jdk-alpine
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the JAR file (your packaged Spring Boot app) to the container
+COPY target/hello-service.jar /app/hello-service.jar
+
+# Set the correct permissions for the JAR file
+RUN chmod +rx /app/hello-service.jar
+
+# Expose the port your Spring Boot app runs on
+EXPOSE 8082
+
+# Run the JAR file
+ENTRYPOINT ["java", "-jar", "hello-service.jar"]

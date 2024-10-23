@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: test-service
+          predicates:
+            - Path=/api/test/**
+          uri: lb://test-service
+        - id: hello-service
+          predicates:
+            - Path=/api/hello/**
+          uri: lb://hello-service
+
+server:
+  port: 8084
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://service-registry:8081/eureka/
