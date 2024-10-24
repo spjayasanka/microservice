@@ -12,15 +12,15 @@ services:
     depends_on:
       - service-registry
 
-  test-service:
-    image: test-service-image
+  user-service:
+    image: user-service-image
     build:
-      context: ./test-service
+      context: ./user-service
       dockerfile: dockerfile
 #    ports:
 #      - "8082:8082"
     volumes:
-      - ./test-service/target/test-service.jar:/app/test-service.jar
+      - ./user-service/target/user-service.jar:/app/user-service.jar
     depends_on:
       - service-registry
     deploy:
