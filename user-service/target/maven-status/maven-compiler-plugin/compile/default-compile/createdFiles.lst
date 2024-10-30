@@ -1,0 +1,6 @@
+com\example\userservice\client\HelloServiceClient.class
+com\example\userservice\config\RestTemplateConfig.class
+com\example\userservice\entity\User.class
+com\example\userservice\repository\UserRepository.class
+com\example\userservice\UserServiceApplication.class
+com\example\userservice\controller\UserController.class

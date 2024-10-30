@@ -1,4 +1,4 @@
-package com.example.userservice.service;
+package com.example.userservice.model;
 
 import com.example.userservice.entity.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,27 +24,27 @@ public class AppUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.password;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return this.username;
+        return username;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override

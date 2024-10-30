@@ -1,6 +1,7 @@
 package com.example.userservice.controller;
 
 import com.example.userservice.client.HelloServiceClient;
+import com.example.userservice.dto.UserDTO;
 import com.example.userservice.entity.User;
 import com.example.userservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +30,10 @@ public class UserController {
         return helloServiceClient.sendHelloEmail();
     }
 
-    @GetMapping("/welcome")
-    public String testProp() {
-        String port = environment.getProperty("local.server.port");
-        return "Application is running on port: " + port;
-    }
-
-    @PostMapping("/users")
-    public User addUser(@RequestBody User user) {
-        return userRepository.save(user);
-    }
+//    @PostMapping("/save-user")
+//    public User addUser(@RequestBody UserDTO user) {
+//        return userRepository.save(user);
+//    }
 
     @GetMapping("/users")
     public Collection<User> getUsers() {
@@ -53,6 +48,12 @@ public class UserController {
     @DeleteMapping("/user/{id}")
     public void deleteUser(@PathVariable int id) {
         userRepository.deleteById(id);
+    }
+
+    @GetMapping("/welcome")
+    public String testProp() {
+        String port = environment.getProperty("local.server.port");
+        return "Application is running on port: " + port;
     }
 
 }

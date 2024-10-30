@@ -1,2 +1,44 @@
-package com.example.userservice.controller;public class AuthController {
+package com.example.userservice.controller;
+
+import com.example.userservice.dto.UserDTO;
+import com.example.userservice.entity.User;
+import com.example.userservice.model.AuthRequest;
+import com.example.userservice.model.AuthResponse;
+import com.example.userservice.service.AuthService;
+import com.example.userservice.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/user/auth")
+public class AuthController {
+
+    @Autowired
+    private AuthService authService;
+
+    private final UserService userService;
+
+    @PostMapping("/login")
+    public AuthResponse login(@RequestBody AuthRequest authRequest) {
+        // Authenticate and generate JWT token
+        return authService.authenticateAndGenerateToken(authRequest);
+    }
+
+    @PostMapping("/register")
+    public String register(@RequestBody UserDTO userDTO) {
+        try {
+            User user = userService.registerUser(userDTO);
+            return "User registered successfully: "  + user.getUsername();
+        } catch (Exception e) {
+            return "Error: " + e.getMessage();
+        }
+    }
+
+    @GetMapping("/validate")
+    public String validateToken(@RequestParam String token) {
+        authService.validateToken(token);
+        return "Token is valid";
+    }
 }

@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   application:
     name: api-gateway
   cloud:
@@ -10,12 +12,17 @@ spring:
       routes:
         - id: user-service
           predicates:
-            - Path=/api/test/**
+            - Path=/api/user/**
           uri: lb://user-service
+          filters:
+            - JwtRequestFilter
+
         - id: hello-service
           predicates:
             - Path=/api/hello/**
           uri: lb://hello-service
+          filters:
+            - JwtRequestFilter
 
 server:
   port: 8084
@@ -23,4 +30,4 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://service-registry:8081/eureka/
+      defaultZone: http://localhost:8081/eureka/

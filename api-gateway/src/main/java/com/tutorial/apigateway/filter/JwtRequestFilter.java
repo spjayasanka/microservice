@@ -1,11 +1,12 @@
 package com.tutorial.apigateway.filter;
 
+import com.tutorial.apigateway.config.JwtUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,6 +14,9 @@ public class JwtRequestFilter extends AbstractGatewayFilterFactory<JwtRequestFil
 
     @Autowired
     private RouteValidator routeValidator;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     public JwtRequestFilter() {
         super(Config.class);
@@ -35,9 +39,8 @@ public class JwtRequestFilter extends AbstractGatewayFilterFactory<JwtRequestFil
                 }
 
                 try {
-
+                    jwtUtil.validateToken(token);
                 } catch (Exception e) {
-                    e.printStackTrace();
                     throw new RuntimeException(e.getMessage());
                 }
             }

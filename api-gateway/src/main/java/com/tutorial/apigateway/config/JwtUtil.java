@@ -1,38 +1,36 @@
-package com.example.userservice.config;
+package com.tutorial.apigateway.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
+import javax.crypto.SecretKey;
+import java.util.Base64;
 
 @Component
 public class JwtUtil {
-    private final static String SECRET_KEY = "spjartz";
+    private final static String SECRET_KEY = "jdwmrCbaWEskmog3IiOXFoQrmmHDzqFB2ZWNdGHWDng=";
 
-    // Generate the token
-    public String generateToken(String username) {
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, username);
-    }
+    private final SecretKey key;
 
-    // Create token with claims and subject
-    private String createToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // Token valid for 10 hours
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-                .compact();
+    public JwtUtil() {
+        this.key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(SECRET_KEY));
     }
 
     public void validateToken(String token) {
-        Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+        Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
+    }
+
+    public Claims getClaimsFromToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
 
