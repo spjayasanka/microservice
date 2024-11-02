@@ -4,6 +4,7 @@ import com.example.userservice.dto.UserDTO;
 import com.example.userservice.entity.User;
 import com.example.userservice.model.AuthRequest;
 import com.example.userservice.model.AuthResponse;
+import com.example.userservice.producer.MessageProducer;
 import com.example.userservice.service.AuthService;
 import com.example.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,9 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+    @Autowired
+    private MessageProducer messageProducer;
+
     private final UserService userService;
 
     @PostMapping("/login")
@@ -30,8 +34,10 @@ public class AuthController {
     public String register(@RequestBody UserDTO userDTO) {
         try {
             User user = userService.registerUser(userDTO);
+            messageProducer.send("user-register-topic", userDTO.toString());
             return "User registered successfully: "  + user.getUsername();
         } catch (Exception e) {
+            messageProducer.send("any-topic", "User registration Failed");
             return "Error: " + e.getMessage();
         }
     }
