@@ -9,6 +9,7 @@ public class UserRegistrationMessageConsumer {
     @KafkaListener(topics = "user-register-topic", groupId = "user-group")
     public void listen(String message) {
         System.out.println(message);
+        System.out.println(message);
     }
 
     @KafkaListener(topics = "any-topic", groupId = "user-group")
