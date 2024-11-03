@@ -11,7 +11,6 @@ import java.util.Base64;
 @Component
 public class JwtUtil {
     private final static String SECRET_KEY = "jdwmrCbaWEskmog3IiOXFoQrmmHDzqFB2ZWNdGHWDng=";
-//    private final static String SECRET_KEY = "jdwmrCbaWEskmog3IiOXFoQrmmHDzqFB2ZWNdGHWDng=";
 
     private final SecretKey key;
 
