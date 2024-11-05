@@ -15,7 +15,6 @@ import java.util.Map;
 @RequestMapping("/api/hello")
 public class HelloController {
 
-    private final Environment environment;
     private final EmailService emailService;
 
     @GetMapping("/welcome")
