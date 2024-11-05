@@ -14,6 +14,5 @@ public class UserRegistrationMessageConsumer {
     @KafkaListener(topics = "any-topic", groupId = "user-group")
     public void listenAny(String message) {
         System.out.println(message);
-        System.out.println(message);
     }
 }
