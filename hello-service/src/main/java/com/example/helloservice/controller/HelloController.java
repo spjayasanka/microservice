@@ -20,7 +20,7 @@ public class HelloController {
 
     @GetMapping("/welcome")
     public String testProp() {
-        return "welcome from hello servic";
+        return "welcome from hello service tfddfvdf";
     }
 
     @GetMapping("/send-email")
