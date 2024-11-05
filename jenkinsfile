@@ -1,67 +1,46 @@
 pipeline {
     agent any
-
     environment {
-        DOCKER_COMPOSE_FILE = 'C:/Users/sanjeewa/Desktop/LEARN/micro service/docker-compose.yml'
+        // Define any required environment variables here
     }
-
-    triggers {
-        pollSCM('H/1 * * * *')  // Poll the local repository every minute
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                // Checkout from the local Git repository
-                dir('C:/path/to/your/local/git/repository') {
-                    // This clones the code from your local repository
-                    sh 'git pull origin master'  // Use pull if your code is already initialized in Jenkins workspace
-                }
+                // Clone the repository and checkout the master branch
+                git branch: 'master', url: 'https://github.com/spjayasanka/microservice.git'
             }
         }
-
-        stage('Build Microservices') {
+        stage('Build') {
             steps {
-                script {
-                    // Build each microservice using Maven
-                    sh './user-service/mvnw clean package -DskipTests'
-                    sh './hello-service/mvnw clean package -DskipTests'
-                }
+                // Add your build steps (e.g., Maven, Gradle, npm)
+                echo 'Building the application...'
             }
         }
-
-        stage('Build Docker Images') {
+        stage('Test') {
             steps {
-                script {
-                    // Build Docker images for each microservice
-                    sh 'docker build -t user-service:latest ./user-service'
-                    sh 'docker build -t hello-service:latest ./hello-service'
-                    sh 'docker build -t api-gateway:latest ./api-gateway'
-                    sh 'docker build -t eureka-server:latest ./eureka-server'
-                }
+                // Add your test steps here
+                echo 'Running tests...'
             }
         }
-
-        stage('Deploy with Docker Compose') {
+        stage('Deploy') {
+            when {
+                branch 'master' // Only deploy for pushes to the master branch
+            }
             steps {
-                script {
-                    // Deploy services using Docker Compose
-                    sh 'docker-compose -f $DOCKER_COMPOSE_FILE down'
-                    sh 'docker-compose -f $DOCKER_COMPOSE_FILE up -d'
-                }
+                // Add deployment steps here
+                echo 'Deploying to production...'
             }
         }
     }
-
     post {
         always {
-            sh 'docker image prune -f'
+            echo 'Pipeline execution completed.'
         }
         success {
-            echo 'Deployment was successful!'
+            echo 'Build was successful!'
         }
         failure {
-            echo 'Deployment failed. Check the logs for details.'
+            echo 'Build failed.'
         }
     }
 }
